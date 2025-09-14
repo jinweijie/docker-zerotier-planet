@@ -24,8 +24,8 @@ RUN set -x\
     && cd ZeroTierOne\
     && git checkout ${TAG}\
     && echo "Switch to tag:${TAG}"\
-    && make ZT_NONFREE=0 -j\
-    && make ZT_NONFREE=0 install\
+    && make ZT_NONFREE=1 -j\
+    && make ZT_NONFREE=1 install\
     && echo "make success!"\
     ; zerotier-one -d  \
     ; sleep 5s && ps -ef |grep zerotier-one |grep -v grep |awk '{print $1}' |xargs kill -9\
