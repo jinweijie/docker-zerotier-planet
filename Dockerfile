@@ -31,10 +31,8 @@ RUN set -x\
     ; zerotier-one -d  \
     ; sleep 5s && ps -ef |grep zerotier-one |grep -v grep |awk '{print $1}' |xargs kill -9\
     && echo "zerotier-one init success!"\
+    && mkdir -p ./attic/world \
     && cd ./attic/world \
-    && cd ./attic \
-    && mkdir world \
-    && cd ./world \
     && cp /app/patch/mkworld.cpp .\
     && cp /app/patch/build.sh .\
     && sh build.sh \
