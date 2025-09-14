@@ -31,9 +31,8 @@ RUN set -x\
     ; sleep 5s && ps -ef |grep zerotier-one |grep -v grep |awk '{print $1}' |xargs kill -9\
     && echo "zerotier-one init success!"\
     && cd ./attic/world \
-    && cp /app/patch/mkworld_custom.cpp .\
-    && mv mkworld.cpp mkworld.cpp.bak \
-    && mv mkworld_custom.cpp mkworld.cpp \
+    && cp /app/patch/mkworld.cpp .\
+    && cp /app/patch/build.sh .\
     && sh build.sh \
     && mv mkworld /var/lib/zerotier-one\
     && echo "mkworld build success!"

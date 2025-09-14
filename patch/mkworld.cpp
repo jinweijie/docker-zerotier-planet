@@ -43,7 +43,7 @@
 
 #include <node/Constants.hpp>
 #include <node/World.hpp>
-#include <node/C25519.hpp>
+#include <node/ECC.hpp>
 #include <node/Identity.hpp>
 #include <node/InetAddress.hpp>
 #include <osdep/OSUtils.hpp>
@@ -62,7 +62,7 @@ void printHelp() {
 int jsonToBinary() {
 	std::string previous, current;
 	if ((!OSUtils::readFile("previous.c25519", previous)) || (!OSUtils::readFile("current.c25519", current))) {
-		C25519::Pair np(C25519::generate());
+		ECC::Pair np(ECC::generate());
 		previous = std::string();
 		previous.append((const char*)np.pub.data, ZT_C25519_PUBLIC_KEY_LEN);
 		previous.append((const char*)np.priv.data, ZT_C25519_PRIVATE_KEY_LEN);
@@ -76,10 +76,10 @@ int jsonToBinary() {
 		fprintf(stderr, "FATAL: previous.c25519 or current.c25519 empty or invalid" ZT_EOL_S);
 		return 1;
 	}
-	C25519::Pair previousKP;
+	ECC::Pair previousKP;
 	memcpy(previousKP.pub.data, previous.data(), ZT_C25519_PUBLIC_KEY_LEN);
 	memcpy(previousKP.priv.data, previous.data() + ZT_C25519_PUBLIC_KEY_LEN, ZT_C25519_PRIVATE_KEY_LEN);
-	C25519::Pair currentKP;
+	ECC::Pair currentKP;
 	memcpy(currentKP.pub.data, current.data(), ZT_C25519_PUBLIC_KEY_LEN);
 	memcpy(currentKP.priv.data, current.data() + ZT_C25519_PUBLIC_KEY_LEN, ZT_C25519_PRIVATE_KEY_LEN);
 
