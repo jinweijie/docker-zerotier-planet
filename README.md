@@ -179,7 +179,8 @@ docker-zerotier-planet/
 ├── patch/
 │   ├── entrypoint.sh     # Container startup script
 │   ├── http_server.js    # File server implementation
-│   └── mkworld_custom.cpp # Modified world generation utility
+│   ├── mkworld.cpp # Modified world generation utility
+│   └── build.sh # The build file
 └── README.md             # This file
 ```
 

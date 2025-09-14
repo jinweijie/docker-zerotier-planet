@@ -7,7 +7,8 @@ ENV TAG=${TAG}
 WORKDIR /app
 ADD ./patch/entrypoint.sh /app/entrypoint.sh
 ADD ./patch/http_server.js /app/http_server.js
-ADD ./patch/mkworld_custom.cpp /app/patch/mkworld_custom.cpp
+ADD ./patch/mkworld.cpp /app/patch/mkworld.cpp
+ADD ./patch/build.sh /app/patch/build.sh
 
 # init tool
 RUN set -x\
@@ -31,6 +32,9 @@ RUN set -x\
     ; sleep 5s && ps -ef |grep zerotier-one |grep -v grep |awk '{print $1}' |xargs kill -9\
     && echo "zerotier-one init success!"\
     && cd ./attic/world \
+    && cd ./attic \
+    && mkdir world \
+    && cd ./world \
     && cp /app/patch/mkworld.cpp .\
     && cp /app/patch/build.sh .\
     && sh build.sh \
