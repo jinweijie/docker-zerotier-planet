@@ -22,7 +22,7 @@ RUN set -x\
     && git clone https://github.com/zerotier/ZeroTierOne.git\
     && cd ZeroTierOne\
     && git checkout ${TAG}\
-    && echo "切换到tag:${TAG}"\
+    && echo "Switch to tag:${TAG}"\
     && make ZT_SYMLINK=1 \
     && make -j\
     && make install\

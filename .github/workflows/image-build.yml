@@ -3,10 +3,8 @@ name: Docker Build on ZeroTier
 on:
   push:
     branches:
-      - master  # 当 master 分支有推送时触发
-  schedule:
-    - cron: '0 */6 * * *'  # 每6小时检查一次
-  workflow_dispatch:  # 允许手动触发
+      - master
+  workflow_dispatch:
 
 jobs:
   check-and-build:
@@ -37,7 +35,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/zerotier-planet-test:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/zerotier-planet-test:${{ steps.get_tag.outputs.latest_tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/zerotier-planet:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/zerotier-planet:${{ steps.get_tag.outputs.latest_tag }}
           build-args: |
-            DERP_VERSION=${{ steps.get_tag.outputs.latest_tag }} 
+            DERP_VERSION=${{ steps.get_tag.outputs.latest_tag }}

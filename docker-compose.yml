@@ -1,0 +1,28 @@
+services:
+  zerotier_planet:
+    image: ${ZT_IMAGE:-jinweijiedocker/zerotier-planet:latest}
+    container_name: ${CONTAINER_NAME:-zerotier_planet}
+    restart: unless-stopped
+
+    environment:
+      IP_ADDR4: ${IP_ADDR4}
+      IP_ADDR6: ${IP_ADDR6}
+      ZT_PORT: ${ZT_PORT}
+      API_PORT: ${API_PORT}
+      FILE_SERVER_PORT: ${FILE_PORT}
+
+    ports:
+      # ZeroTier planet port (both TCP and UDP)
+      - "${ZT_PORT}:${ZT_PORT}/tcp"
+      - "${ZT_PORT}:${ZT_PORT}/udp"
+      # Web API (ztncui)
+      - "${API_PORT}:${API_PORT}"
+      # File server
+      - "${FILE_PORT}:${FILE_PORT}"
+
+    volumes:
+      # Keep the same layout as your script: ./data/zerotier/*
+      - "${DIST_PATH:-./data/zerotier/dist}:/app/dist"
+      - "${ZTNCUI_PATH:-./data/zerotier/ztncui}:/app/ztncui"
+      - "${ONE_PATH:-./data/zerotier/one}:/var/lib/zerotier-one"
+      - "${CONFIG_PATH:-./data/zerotier/config}:/app/config"
