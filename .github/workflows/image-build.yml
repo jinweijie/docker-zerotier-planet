@@ -16,7 +16,7 @@ jobs:
       - name: Get latest Tailscale tag
         id: get_tag
         run: |
-          LATEST_TAG=$(curl -s https://api.github.com/repos/zerotier/ZeroTierOne/tags | jq -r '.[0].name')
+          LATEST_TAG=$(curl -s https://api.github.com/repos/zerotier/ZeroTierOne/tags | jq -r '.[] | select(.name | test("^\\d+\\.\\d+\\.\\d+$")) | .name' | head -1)
           echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
           echo "latest_tag=${LATEST_TAG}" >> $GITHUB_OUTPUT
 
@@ -38,4 +38,4 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/zerotier-planet:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/zerotier-planet:${{ steps.get_tag.outputs.latest_tag }}
           build-args: |
-            DERP_VERSION=${{ steps.get_tag.outputs.latest_tag }}
+            TAG=${{ steps.get_tag.outputs.latest_tag }}

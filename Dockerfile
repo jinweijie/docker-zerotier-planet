@@ -23,7 +23,7 @@ RUN set -x\
     && git clone https://github.com/zerotier/ZeroTierOne.git\
     && cd ZeroTierOne\
     && git checkout ${TAG}\
-    && echo "Switch to tag:${TAG}"\
+    && echo "***Using tag:${TAG}***"\
     && make ZT_NONFREE=1 -j\
     && make ZT_NONFREE=1 install\
     && echo "make success!"\
@@ -46,7 +46,7 @@ RUN set -x\
 RUN set -x \
     && mkdir /app -p \
     &&  cd /app \
-    && git clone --progress https://github.com/key-networks/ztncui.git\
+    && git clone --progress https://github.com/jinweijie/ztncui.git\
     && cd /app/ztncui/src \
     && npm config set registry https://registry.npmmirror.com\
     && npm install -g node-gyp\
@@ -63,7 +63,7 @@ ENV ZT_PORT=9994
 ENV API_PORT=3443
 ENV FILE_SERVER_PORT=3000
 
-ENV GH_MIRROR="https://mirror.ghproxy.com/"
+#ENV GH_MIRROR="https://mirror.ghproxy.com/"
 ENV FILE_KEY=''
 ENV TZ=Asia/Shanghai
 

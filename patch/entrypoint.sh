@@ -2,7 +2,7 @@
 
 set -x 
 
-# 配置路径和端口
+# Configure paths and ports
 ZEROTIER_PATH="/var/lib/zerotier-one"
 APP_PATH="/app"
 CONFIG_PATH="${APP_PATH}/config"
@@ -10,7 +10,7 @@ BACKUP_PATH="/bak"
 ZTNCUI_PATH="${APP_PATH}/ztncui"
 ZTNCUI_SRC_PATH="${ZTNCUI_PATH}/src"
 
-# 启动 ZeroTier 和 ztncui
+# Start ZeroTier and ztncui
 function start() {
     echo "Start ztncui and zerotier"
     cd $ZEROTIER_PATH && ./zerotier-one -p$(cat ${CONFIG_PATH}/zerotier-one.port) -d || exit 1
@@ -18,7 +18,7 @@ function start() {
     cd $ZTNCUI_SRC_PATH && npm start || exit 1
 }
 
-# 检查文件服务器端口配置文件
+# Check file server port configuration file
 function check_file_server() {
     if [ ! -f "${CONFIG_PATH}/file_server.port" ]; then
         echo "file_server.port does not exist, generating it"
@@ -30,7 +30,7 @@ function check_file_server() {
     echo "${FILE_SERVER_PORT}"
 }
 
-# 初始化 ZeroTier 数据
+# Initialize ZeroTier data
 function init_zerotier_data() {
     echo "Initializing ZeroTier data"
     echo "${ZT_PORT}" > ${CONFIG_PATH}/zerotier-one.port
@@ -79,7 +79,7 @@ function init_zerotier_data() {
     echo "mkmoonworld success!"
 }
 
-# 检查并初始化 ZeroTier
+# Check and initialize ZeroTier
 function check_zerotier() {
     mkdir -p $ZEROTIER_PATH
     if [ "$(ls -A $ZEROTIER_PATH)" ]; then
@@ -89,7 +89,7 @@ function check_zerotier() {
     fi
 }
 
-# 初始化 ztncui 数据
+# Initialize ztncui data
 function init_ztncui_data() {
     echo "Initializing ztncui data"
     cp -r ${BACKUP_PATH}/ztncui/* $ZTNCUI_PATH
@@ -108,7 +108,7 @@ function init_ztncui_data() {
     echo "ztncui configuration successful!"
 }
 
-# 检查并初始化 ztncui
+# Check and initialize ztncui
 function check_ztncui() {
     mkdir -p $ZTNCUI_PATH
     if [ "$(ls -A $ZTNCUI_PATH)" ]; then
