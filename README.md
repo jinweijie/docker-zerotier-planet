@@ -136,62 +136,6 @@ The following volumes are automatically created and managed by docker-compose:
 
 Volume paths can be customized in the `.env` file using the `*_PATH` variables.
 
-## 🏗️ Build from Source
-
-### Prerequisites
-
-- Docker with buildx support
-- Git
-- jq (for version checking)
-
-### Build Process
-
-1. **Build the image:**
-
-   ```bash
-   chmod +x build.sh
-   ./build.sh
-   ```
-
-2. **The build script will:**
-   - Check for latest ZeroTier version
-   - Build multi-architecture image (ARM64/AMD64)
-   - Push to Docker Hub (if configured)
-
-### Custom Build
-
-```bash
-docker buildx build \
-  --platform linux/arm64,linux/amd64 \
-  -t your-username/zerotier-planet:latest \
-  --push .
-```
-
-## 📁 Project Structure
-
-```
-docker-zerotier-planet/
-├── docker-compose.yml     # Docker Compose configuration
-├── .env.example          # Environment variables template
-├── .env                  # Environment variables (create from .env.example)
-├── Dockerfile            # Multi-stage Docker build
-├── build.sh              # Build script with version checking
-├── patch/
-│   ├── entrypoint.sh     # Container startup script
-│   ├── http_server.js    # File server implementation
-│   ├── mkworld.cpp # Modified world generation utility
-│   └── build.sh # The build file
-└── README.md             # This file
-```
-
-## 🔒 Security Considerations
-
-- Change default admin password immediately
-- Use firewall rules to restrict access to management ports
-- Consider using HTTPS for the web interface in production
-- Regularly update the container image
-- Monitor access logs
-
 ## 🌐 Network Configuration
 
 ### Required Ports
@@ -201,61 +145,33 @@ docker-zerotier-planet/
 - **3443/TCP**: Web management interface
 - **3000/TCP**: File server
 
-### Firewall Rules
+## Client Configuration
 
-```bash
-# UFW example
-ufw allow 9994/udp
-ufw allow 9994/tcp
-ufw allow 3443/tcp
-ufw allow 3000/tcp
-```
+### Windows
 
-## 🐛 Troubleshooting
+1. First, download a ZeroTier client from the official ZeroTier website.
+2. Copy and overwrite the planet file into `C:\ProgramData\ZeroTier\One\` (Note: this is a hidden directory, so you may need to enable viewing hidden folders).
+3. Open `Services` and restart the service named "ZeroTier One".
+4. Run `Powershell` with Administrator priviledge, run `zerotier-cli.bat join <network id>`
+5. Approve the new member from the Web UI.
 
-### Common Issues
+### Linux
 
-1. **Container won't start:**
+1. Install the Linux client software. `curl -s https://install.zerotier.com | sudo bash`
+2. Go to the directory `/var/lib/zerotier-one`.
+3. Replace the `planet` file in this directory and `sudo chown zerotier-one:zerotier-one planet`
+4. Restart the zerotier-one service: `sudo service zerotier-one restart`
+5. Join the network: `zerotier-cli join <network id>`
+6. Approve the join request in the management web interface.
+7. Run `zerotier-cli peers` and you should see the PLANET role.
 
-   - Check if ports are available
-   - Verify Docker daemon is running
-   - Check container logs: `docker-compose logs`
+### MacOS
 
-2. **Can't access web interface:**
-
-   - Verify firewall settings
-   - Check if API_PORT is correct in `.env` file
-   - Ensure container is running: `docker-compose ps`
-
-3. **Planet file download fails:**
-   - Check file server port configuration
-   - Verify access key is correct
-   - Check file server logs
-
-### Logs
-
-```bash
-# Container logs
-docker-compose logs -f
-
-# File server logs
-docker-compose exec zerotier_planet cat /app/server.log
-
-# ZeroTier logs
-docker-compose exec zerotier_planet cat /var/lib/zerotier-one/zerotier-one.log
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+1. Go to the `/Library/Application Support/ZeroTier/One/` directory and replace the `planet` file in this directory.
+2. Restart ZeroTier-One: `cat /Library/Application\ Support/ZeroTier/One/zerotier-one.pid | sudo xargs kill`
+3. Join the network: `zerotier-cli join <network id>`
+4. Approve the join request in the management web interface.
+5. Run `zerotier-cli peers` and you should see the PLANET role.
 
 ## 🙏 Acknowledgments
 
